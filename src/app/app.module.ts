@@ -16,7 +16,10 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { LogoutComponent } from './sign-in/logout';
 import { SignInExternal } from './sign-in/sign-in-external';
-
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatInputModule} from '@angular/material/input';
+import {MatIconModule} from '@angular/material/icon';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +38,11 @@ import { SignInExternal } from './sign-in/sign-in-external';
     HttpClientModule,
     FormsModule,
     AngularFontAwesomeModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatGridListModule,
+    MatInputModule,
+    MatIconModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

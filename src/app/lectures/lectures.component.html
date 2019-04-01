@@ -1,5 +1,52 @@
-<div class="container">
-  <p>
-    lectures works!
-  </p>
+<div class="col-md-10 col-lg-8 col-xl-7 mx-auto mt-3">
+    <form>
+      <div class="form-row">
+        <div class="col-12 col-md-9 mb-md-0">
+          <input type="text" [(ngModel)]="searchedPhrase" name="searchedPhrase" class="form-control form-control-lg" placeholder="Czego szukasz?">
+        </div>
+        <div class="col-12 col-md-3">
+          <button type="submit" (click)="getLectures()" class="btn btn-block btn-lg btn-primary">Wyszukaj</button>
+        </div>
+      </div>
+    </form>
 </div>
+<div class="container main-panel">
+    <div class="row" *ngFor="let i of getRange();">
+      <div class="col-md-4 mb-5" [hidden]="!Lectures[i]">
+        <div class="card h-100">
+          <div class="card-body">
+            <h2 class="card-title">{{Lectures[i]?.name}}</h2>
+            <p class="card-text">{{Lectures[i]?.description}}</p>
+          </div>
+          <div class="card-footer">
+            <a href="#" class="btn btn-primary btn-sm">Więcej</a>
+          </div>
+        </div>
+      </div>
+      <!-- /.col-md-4 -->
+      <div class="col-md-4 mb-5" [hidden]="!Lectures[i+1]">
+        <div class="card h-100">
+          <div class="card-body">
+            <h2 class="card-title">{{Lectures[i+1]?.name}}</h2>
+            <p class="card-text">{{Lectures[i+1]?.description}}</p>
+          </div>
+          <div class="card-footer">
+            <a href="#" class="btn btn-primary btn-sm">Więcej</a>
+          </div>
+        </div>
+      </div>
+      <!-- /.col-md-4 -->
+      <div class="col-md-4 mb-5" [hidden]="!Lectures[i+2]">
+        <div class="card h-100">
+          <div class="card-body">
+            <h2 class="card-title">{{Lectures[i+2]?.name}}</h2>
+            <p class="card-text">{{Lectures[i+2]?.description}}</p>
+          </div>
+          <div class="card-footer">
+            <a href="#" class="btn btn-primary btn-sm">Więcej</a>
+          </div>
+        </div>
+      </div>
+      <!-- /.col-md-4 -->
+    </div>
+  </div>

@@ -17,6 +17,7 @@ const appRoutes: Routes =
   { path: "rejestracja", component: SignUpComponent },
   { path: 'wyloguj', component: LogoutComponent },
   { path: 'signin-external', component: SignInExternal },
+  { path: 'kursy', component: LecturesComponent},
   { path: '**', component: HomeComponent}
 ];
 @NgModule({
