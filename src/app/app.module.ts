@@ -35,15 +35,7 @@ import { SignInExternal } from './sign-in/sign-in-external';
     HttpClientModule,
     FormsModule,
     AngularFontAwesomeModule,
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'logowanie', component: SignInComponent },
-      { path: 'profil', component: ProfileComponent },
-      { path: 'zajecia', component: LecturesComponent },
-      { path: "rejestracja", component: SignUpComponent },
-      { path: 'wyloguj', component: LogoutComponent },
-      { path: 'signin-external', component: SignInExternal }
-    ])
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
