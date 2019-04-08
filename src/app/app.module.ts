@@ -20,6 +20,9 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {NgbModule, NgbPagination} from '@ng-bootstrap/ng-bootstrap';
+import {MatSelectModule} from '@angular/material/select';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +45,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatGridListModule,
     MatInputModule,
     MatIconModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgbModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
