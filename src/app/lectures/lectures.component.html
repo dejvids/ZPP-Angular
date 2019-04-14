@@ -5,11 +5,19 @@
           <input type="text" [(ngModel)]="searchedPhrase" name="searchedPhrase" class="form-control form-control-lg" placeholder="Czego szukasz?">
         </div>
         <div class="col-12 col-md-3">
-          <button type="submit" (click)="getLectures()" class="btn btn-block btn-lg btn-primary">Wyszukaj</button>
+          <button type="submit" (click)="getNumberOfLectures()" class="btn btn-block btn-lg btn-primary">Wyszukaj</button>
         </div>
       </div>
     </form>
 </div>
+<mat-form-field class="select-order-box">
+  <mat-label>Sortuj według</mat-label>
+  <mat-select [(value)]="order" (selectionChange)="getLectures()">
+    <mat-option *ngFor="let orderOption of orderOptions" [value]="orderOption">
+      {{orderOption.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
 <div class="container main-panel">
     <div class="row" *ngFor="let i of getRange();">
       <div class="col-md-4 mb-5" [hidden]="!Lectures[i]">
@@ -48,5 +56,8 @@
         </div>
       </div>
       <!-- /.col-md-4 -->
+    </div>
+    <div class="d-flex justify-content-center">
+      <ngb-pagination [(page)]="page" [pageSize]="6" [collectionSize]="12" maxSize="5" (pageChange)="pageChange()"></ngb-pagination>
     </div>
   </div>

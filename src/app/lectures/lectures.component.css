@@ -1,3 +1,12 @@
 .main-panel{
     margin-top: 5em;
 }
+.select-order-box {
+    float: right;
+    margin-right: 100px;
+    margin-top: 10px;
+}
+.page-link {
+    color: #fff !important;
+    background-color: #2C3E50 !important;
+}
