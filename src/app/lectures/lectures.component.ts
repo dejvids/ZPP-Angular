@@ -74,7 +74,7 @@ export class LecturesComponent implements OnInit {
         range.push(i);
       }
     }
-    return range;  
+    return range;
   }
   pageChange() {
     this.getLectures();

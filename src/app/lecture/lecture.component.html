@@ -1,0 +1,33 @@
+<div class="container container-margin-top">
+  <div *ngIf=hasJoined class="alert alert-success" role="alert">{{message}}</div>
+
+  <div *ngIf=hasError class="alert alert-danger" role="alert">{{message}}</div>
+
+  <a class="btn link-back"  [routerLink]='["/zajecia"]'><i class="fa fa-arrow-left" aria-hidden="true"></i><span
+      class="margin-left-std">Powrót do listy</span></a>
+  <h2>{{lecture.name}}</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <div id="details">
+        <h3><span class="header-bold"><i class="fa fa-calendar" aria-hidden="true"></i> Data:
+          </span>{{lecture.date}}</h3>
+        <h3><span class="header-bold"><i class="fa fa-map-marker" aria-hidden="true"></i> Miejsce:
+          </span>{{lecture.place}}</h3>
+        <h3><span class="header-bold"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Prowadzący:
+          </span>{{lecture.lecturerName}} {{lecture.lecturerSurname}}</h3>
+        <h3><span class="header-bold"><i class="fa fa-users" aria-hidden="true"></i> L. uczestników:
+          </span>{{lecture.numberOfParticipants}}</h3>
+      </div>
+      <div id="description">
+        <h2>Opis zajęć</h2>
+        <p>{{lecture.description}}</p>
+      </div>
+
+      <button *ngIf=!userAlreadyJoined class="btn btn-primary btn-lg btn-ok" (click)="join()">Zapisz się!</button>
+
+    </div>
+    <div class="col-md-6">
+      <!-- <div id="googleMap" style="width:100%;height:400px;"></div> -->
+    </div>
+  </div>
+</div>
