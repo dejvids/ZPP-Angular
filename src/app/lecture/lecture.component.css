@@ -1,0 +1,33 @@
+h2 {
+    font-size: 18pt;
+}
+
+#details {
+    margin-top: 2rem;
+}
+
+#description {
+    margin-top: 2rem;
+}
+
+h3 {
+    font-size: 12pt;
+}
+
+.header-bold {
+    font-weight: bold;
+}
+
+.link-back {
+    font-size: 16pt;
+    margin-bottom: 1em;
+    padding-left: 0px;
+}
+
+    .link-back:hover {
+        color: #050709;
+    }
+
+.margin-left-std {
+    margin-left: 1em;
+}

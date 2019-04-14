@@ -7,4 +7,5 @@ export class Lecture{
     lecturerId : number;
     lecturerName : string;
     lecturerSurname : string;
+    numberOfParticipants: number;
 }
