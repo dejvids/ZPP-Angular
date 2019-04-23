@@ -1,6 +1,223 @@
 <div class="container">
-  <h1>Zalogowano</h1>
-  <p>
-    {{user.name}} {{user.surname}}
-  </p>
+    <h1>{{user.name}} {{user.surname}}</h1>
+    <div class="row container-margin-top">
+        <div class="modal" tabindex="-1" [style.display]="DeleteConfVisible ? 'block' : 'none'" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Potwierdzenie</h5>
+                        <button type="button" class="close" (click)="CloseDialog()" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Czy na pewno chcesz zrezygnować z zajęć <span
+                                style="font-style: italic;">{{SelectedLecture.name}}</span>?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" (click)="CloseDialog()" class="btn btn-secondary" data-dismiss="modal">Nie</button>
+                        <button type="button" class="btn btn-primary" (click)="QuitLecture()">Tak</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" tabindex="-1" [style.display]="SetPresentVisible ? 'block' : 'none'" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Potwierdzenie obecności</h5>
+                        <button type="button" (click)="CloseDialog()" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Aby potwierdzić obecność wpisz kod podany przez prowadzącego zajęcia</p>
+                        <div class="form-group">
+                            <label for="code">Kod:</label>
+                            <input type="text" class="form-control" id="code" bind="ConfirmationCode" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" (click)="CloseDialog()" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                        <button type="button" class="btn btn-primary" (click)="SetPresent()">Potwiedź</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal" tabindex="-1" [style.display]="SetOpinionVisible ? 'block' : 'none'" role="dialog">
+            <div class="modal-dialog  modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Ocenianie zajęć</h5>
+                        <button type="button" (click)="CloseDialog()" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Wypełnij podane pola</p>
+                        <div class="font-weight-bold mt-2">Jak oceniasz ciekawość przedstawionego tematu?</div>
+                        <div class="form-check form-check-inline">
+                            <label>Bardzo źle</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="grade1" value="1">
+                            <label class="form-check-label" for="grade1">1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="grade2" value="2">
+                            <label class="form-check-label" for="grade1">2</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="grade3" value="3">
+                            <label class="form-check-label" for="grade1">3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="grade4" value="4">
+                            <label class="form-check-label" for="grade1">4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="grade5" value="5">
+                            <label class="form-check-label" for="grade1">5</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label>Bardzo Dobrze</label>
+                        </div>
+
+                        <div class="font-weight-bold mt-2">Jak oceniasz prowadzącego zajęcia?</div>
+                        <div class="form-check form-check-inline">
+                            <label>Bardzo źle</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="grade1" value="1">
+                            <label class="form-check-label" for="grade1">1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="grade2" value="2">
+                            <label class="form-check-label" for="grade1">2</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="grade3" value="3">
+                            <label class="form-check-label" for="grade1">3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="grade4" value="4">
+                            <label class="form-check-label" for="grade1">4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="grade5" value="5">
+                            <label class="form-check-label" for="grade1">5</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label>Bardzo Dobrze</label>
+                        </div>
+
+                        <div class="font-weight-bold mt-2">Jak jest szansa że poleciłbyś zajęcia innej osobie?</div>
+                        <div class="form-check form-check-inline">
+                            <label>Brak szansy</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="grade1" value="1">
+                            <label class="form-check-label" for="grade1">1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="grade2" value="2">
+                            <label class="form-check-label" for="grade1">2</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="grade3" value="3">
+                            <label class="form-check-label" for="grade1">3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="grade4" value="4">
+                            <label class="form-check-label" for="grade1">4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="grade5" value="5">
+                            <label class="form-check-label" for="grade1">5</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label>Na pewno poleciłbym</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1 font-weight-bold mt-2">Komentarz</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                                placeholder="Napisz komentarz"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" (click)="CloseDialog()" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                        <button type="button" class="btn btn-primary" (click)="SaveOpinion()">Zapisz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" >
+            <h3>Moje zajęcia</h3>
+            <ul *ngIf="LoadedLectures else loading" class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link" [ngClass]="{'active': SelectedTab == 0}" id="home-tab" data-toggle="tab" role="tab"
+                        aria-selected="true" (click)="ShowActive()">Aktywne</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="profile-tab" [ngClass]="{'active': SelectedTab == 1}" data-toggle="tab" role="tab"
+                        aria-selected="false" (click)="ShowFuture()">Nadchodzące</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" [ngClass]="{'active': SelectedTab == 2}" id="contact-tab" data-toggle="tab" role="tab"
+                        aria-selected="false" (click)="ShowPast()" >Zakończone</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div [ngClass]="{'tab-pane fade' : true, 'show active': SelectedTab == 0}"   id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <ul class="list-group">
+
+                        <li *ngFor="let lecture of ActiveLectures" class="list-group-item">
+                            <a class="btn btn-link" [routerLink]="['/zajecia', lecture.id]">
+                                {{lecture.name}}
+                            </a>
+                            <button class="btn btn-success horizontal-right" (click)="ShowSetPresentDialog(lecture)">
+                                Potwierdź obecność
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div [ngClass]="{'tab-pane fade' : true, 'show active': SelectedTab == 1}" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <ul class="list-group">
+                        <li *ngFor="let lecture of FutureLectures" class="list-group-item">
+                            <span class="badge badge-primary badge-pill">{{lecture.date | date: 'dd-MM-yyyy'}}</span>
+                            <a class="btn btn-link" [routerLink]="['/zajecia', lecture.id]" >
+                                {{lecture.name}}
+                            </a>
+                            <button class="btn btn-danger horizontal-right" (click)="ShowDeleteConfirmation(lecture)">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                Rezygnuj
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div [ngClass]="{'tab-pane fade' : true, 'show active': SelectedTab == 2}" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                    <ul class="list-group">
+                        <li *ngFor="let lecture of PastLectures" class="list-group-item">
+                            <span class="badge badge-primary badge-pill">{{lecture.date | date: 'dd-MM-yyyy'}}</span>
+                            <a class="btn btn-link" [routerLink]="['/zajecia', lecture.id]">
+                                {{lecture.name}}
+                            </a>
+
+                            <button class="btn btn-secondary horizontal-right" (click)="ShowSetOpinionDialog(lecture)">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                Oceń
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <ng-template #loading >
+            <div class="loader-lg"></div>
+        </ng-template>
+    </div>
 </div>
