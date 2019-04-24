@@ -29,7 +29,7 @@
           <p class="card-text">{{PromotingLectures[0]?.description}}</p>
         </div>
         <div class="card-footer">
-          <a href="#" class="btn btn-primary btn-sm">Więcej</a>
+          <button (click)='NavigateToDetails(PromotingLectures[0]?.id)' class="btn btn-primary btn-sm">Więcej</button>
         </div>
       </div>
     </div>
@@ -41,7 +41,7 @@
           <p class="card-text">{{PromotingLectures[1]?.description}}</p>
         </div>
         <div class="card-footer">
-          <a href="#" class="btn btn-primary btn-sm">Więcej</a>
+          <button (click)='NavigateToDetails(PromotingLectures[1]?.id)' class="btn btn-primary btn-sm">Więcej</button>
         </div>
       </div>
     </div>
@@ -53,7 +53,7 @@
           <p class="card-text">{{PromotingLectures[2]?.description}}</p>
         </div>
         <div class="card-footer">
-          <a href="#" class="btn btn-primary btn-sm">Więcej</a>
+          <button (click)='NavigateToDetails(PromotingLectures[2].id)' class="btn btn-primary btn-sm">Więcej</button>
         </div>
       </div>
     </div>

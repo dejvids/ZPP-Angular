@@ -105,3 +105,8 @@
 div .container-margin-top{
     margin-top: 4rem;
 }
+.btn-ok{
+    background-color: #39A738;
+    border-color: #39A738;
+    width: 100%;
+}

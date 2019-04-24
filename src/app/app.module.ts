@@ -22,6 +22,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {NgbModule, NgbPagination} from '@ng-bootstrap/ng-bootstrap';
 import {MatSelectModule} from '@angular/material/select';
+import { LectureComponent } from './lecture/lecture.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {MatSelectModule} from '@angular/material/select';
     FooterComponent,
     SignUpComponent,
     LogoutComponent,
-    SignInExternal
+    SignInExternal,
+    LectureComponent
   ],
   imports: [
     BrowserModule,

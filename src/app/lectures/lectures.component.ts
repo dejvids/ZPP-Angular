@@ -4,6 +4,7 @@ import { Lecture } from '../Models/Lecture';
 import { Inject } from '@angular/core';
 import { tap, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lectures',
@@ -36,7 +37,7 @@ export class LecturesComponent implements OnInit {
   page: number = 1;
   numberOfLectures: number = 1;
   order = this.orderOptions[0];
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
+  constructor(private http: HttpClient, private router: Router, @Inject('BASE_URL') private baseUrl: string) {
   }
 
   ngOnInit() {
@@ -74,9 +75,13 @@ export class LecturesComponent implements OnInit {
         range.push(i);
       }
     }
-    return range;  
+    return range;
   }
   pageChange() {
     this.getLectures();
+  }
+
+  public NavigateToDetails(id: number) {
+    this.router.navigateByUrl('/zajecia/' + id);
   }
 }
