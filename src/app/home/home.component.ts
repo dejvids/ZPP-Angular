@@ -3,6 +3,7 @@ import { Lecture } from '../Models/Lecture';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { tap, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -14,10 +15,12 @@ export class HomeComponent implements OnInit {
   PromotingLectures: Lecture[];
   Lectures: Lecture[];
   searchedPhrase: string = "";
+  router: Router;
   @Output() openedHome = new EventEmitter<boolean>();
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
+  constructor(private http: HttpClient, router: Router,  @Inject('BASE_URL') private baseUrl: string) {
     this.getLectures();
+    this.router = router;
   }
 
   ngOnInit() {
@@ -35,6 +38,12 @@ export class HomeComponent implements OnInit {
       this.PromotingLectures = [this.Lectures[0], this.Lectures[1], this.Lectures[2]];
     });
   }
+
+  public NavigateToDetails(id: number)
+  {
+    this.router.navigateByUrl("/zajecia/"+id);
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 
