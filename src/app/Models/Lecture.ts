@@ -18,5 +18,4 @@ export class Lecture{
     lecturerName : string;
     lecturerSurname : string;
     numberOfParticipants: number;
->>>>>>> Added lecture detail page
 }
