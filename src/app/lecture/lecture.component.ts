@@ -46,14 +46,18 @@ export class LectureComponent implements OnInit {
     let url = this.baseUrl + '/api/lectures/participants/add-me';
     let content = {lecturerId: this.lecture.id};
     let token:JsonWebToken = JSON.parse(localStorage.getItem('token'));
+    console.log(token);
     if(token == null){
+      console.log('token is null');
       this.router.navigate(['/logowanie']);
     }
     
    // httpOptions.headers.append('Authorization', 'Bearer ${token.accessToken}');
-    httpOptions.headers.set('Authorization', 'Bearer ' + token.accessToken);
-    console.log('Bearer ${token.accessToken}');
-    this.http.post<string>(url, content, httpOptions)
+   let httpHeaders = new HttpHeaders()
+     .set('Content-Type', 'application/json; charset=utf-8')
+     .set('Authorization', 'Bearer ' + token.accessToken);
+
+    this.http.post<string>(url, content,  { headers: httpHeaders })
       .pipe(
         tap(res => console.log('join ok')),
         catchError(this.handleError<string>())
@@ -78,6 +82,7 @@ export class LectureComponent implements OnInit {
         this.hasError = true;
       }
       else if(error.status == 401) {
+        console.log("Unathorized");
         this.router.navigate(['/logowanie']);
       }
 
