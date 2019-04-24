@@ -23,7 +23,9 @@
         <p>{{lecture.description}}</p>
       </div>
 
-      <button *ngIf=!userAlreadyJoined class="btn btn-primary btn-lg btn-ok" (click)="join()">Zapisz się!</button>
+      <button *ngIf="!userAlreadyJoined && isLoaded" class="btn btn-primary btn-lg btn-ok" (click)="join()">Zapisz się!</button>
+      <div *ngIf="finished" class="alert alert-secondary">Zapisy na zajęcia zostały zakończone</div>
+      <div *ngIf="userAlreadyJoined" class="alert alert-info">Jesteś zapisany na te zajęcia</div>
 
     </div>
     <div class="col-md-6">

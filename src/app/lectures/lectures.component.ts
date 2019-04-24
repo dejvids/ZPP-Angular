@@ -81,7 +81,7 @@ export class LecturesComponent implements OnInit {
     this.getLectures();
   }
 
-  public NavigateToDetails(id: number){
+  public NavigateToDetails(id: number) {
     this.router.navigateByUrl('/zajecia/' + id);
   }
 }
