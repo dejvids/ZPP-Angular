@@ -7,20 +7,16 @@ import { Router } from '@angular/router';
 import { JsonWebToken } from '../Models/JsonWebToken';
 import { UserLecture } from '../Models/UserLecture';
 import { LectureService } from '../lecture-service.service';
+import {LectureTab} from '../enums/LectureTab';
 
-enum LectureTab {
-  current,
-  future,
-  past
-}
 
 @Component({
   selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  templateUrl: './student.component.html',
+  styleUrls: ['./student.component.css']
 })
 
-export class ProfileComponent implements OnInit {
+export class StudentComponent implements OnInit {
   lectureService: LectureService;
   UserLectures: UserLecture[];
   FutureLectures: UserLecture[];
@@ -76,14 +72,14 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    let token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     if (token == null) {
       this.roter.navigateByUrl('/logowanie');
       return;
     }
 
-    let tokenObj = JSON.parse(token);
-    let jwt = tokenObj.accessToken;
+    const tokenObj = JSON.parse(token);
+    const jwt = tokenObj.accessToken;
     this.httpHeaders =
       new HttpHeaders()
         .set('Content-Type', 'application/json; charset=utf-8')
@@ -106,7 +102,7 @@ export class ProfileComponent implements OnInit {
           catchError(this.handleError<any>())
         ).subscribe(res => {
           this.UserLectures = res;
-          console.log("Futere lectures " + this.UserLectures.length);
+          console.log('Futere lectures ' + this.UserLectures.length);
           this.ActiveLectures = this.UserLectures.filter(x => new Date(x.date).getTime() <= Date.now() && new Date(x.date).getTime() >= Date.now() - (30 * 24 * 3600 * 1000) && x.present == false);
           this.FutureLectures = this.UserLectures.filter(x => new Date(x.date).getTime() > Date.now());
           this.PastLectures = this.UserLectures.filter(x => new Date(x.date).getTime() < Date.now() && !this.ActiveLectures.find(l=>l.id == x.id));

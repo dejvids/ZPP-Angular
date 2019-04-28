@@ -1,0 +1,103 @@
+<div class="container">
+  <h1>{{user.name}} {{user.surname}}</h1>
+  <div class="container-margin-top">
+    <div class="modal" tabindex="-1" [style.display]="DeleteConfVisible ? 'block' : 'none'" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Potwierdzenie</h5>
+            <button type="button" class="close" (click)="CloseDialog()" data-dismiss="modal" aria-label="CloseDialog()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Czy na pewno chcesz usunąć zajęcia <span style="font-style: italic;">{{SelectedLecture.name}}</span>?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" (click)="CloseDialog()" class="btn btn-secondary" data-dismiss="modal">Nie</button>
+            <button type="button" class="btn btn-primary" (click)="DeleteLecture()">Tak</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-10">
+        <h3>Moje zajęcia</h3>
+      </div>
+
+      <div class="col-md-2">
+        <a  [routerLink]='["/zajecia/dodaj"]' class="btn btn-primary">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+          Dodaj
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+
+        <ul *ngIf="LoadedLectures else loading" class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <button class="nav-link" [ngClass]="{'active': SelectedTab == 0}" id="home-tab" data-toggle="tab" role="tab"
+              aria-selected="true" (click)="ShowActive()">Aktywne</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" id="profile-tab" [ngClass]="{'active': SelectedTab == 1}" data-toggle="tab"
+              role="tab" aria-selected="false" (click)="ShowFuture()">Nadchodzące</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" [ngClass]="{'active': SelectedTab == 2}" id="contact-tab" data-toggle="tab"
+              role="tab" aria-selected="false" (click)="ShowPast()">Zakończone</button>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div [ngClass]="{'tab-pane fade' : true, 'show active': SelectedTab == 0}" id="home" role="tabpanel"
+            aria-labelledby="home-tab">
+            <ul class="list-group">
+
+              <li *ngFor="let lecture of ActiveLectures" class="list-group-item">
+                <a class="btn btn-link" [routerLink]="['/zajecia', lecture.id]">
+                  {{lecture.name}}
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div [ngClass]="{'tab-pane fade' : true, 'show active': SelectedTab == 1}" id="profile" role="tabpanel"
+            aria-labelledby="profile-tab">
+            <ul class="list-group">
+              <li *ngFor="let lecture of FutureLectures" class="list-group-item">
+                <span class="badge badge-primary badge-pill">{{lecture.date | date: 'dd-MM-yyyy'}}</span>
+                <a class="btn btn-link" [routerLink]="['/zajecia', lecture.id]">
+                  {{lecture.name}}
+                </a>
+                <button class="btn btn-danger horizontal-right" (click)="ShowDeleteConfirmation(lecture)">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                  Usuń
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div [ngClass]="{'tab-pane fade' : true, 'show active': SelectedTab == 2}" id="contact" role="tabpanel"
+            aria-labelledby="contact-tab">
+            <ul class="list-group">
+              <li *ngFor="let lecture of PastLectures" class="list-group-item">
+                <span class="badge badge-primary badge-pill">{{lecture.date | date: 'dd-MM-yyyy'}}</span>
+                <a class="btn btn-link" [routerLink]="['/zajecia', lecture.id]">
+                  {{lecture.name}}
+                </a>
+
+                <button class="btn btn-secondary horizontal-right" (click)="ShowSetOpinionDialog(lecture)">
+                    <i class="fa fa-list" aria-hidden="true"></i>
+                  Oceny
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <ng-template #loading>
+        <div class="loader-lg"></div>
+      </ng-template>
+    </div>
+  </div>
+</div>

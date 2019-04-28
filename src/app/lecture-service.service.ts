@@ -11,7 +11,7 @@ export class LectureService {
   http: HttpClient;
   baseUrl: string;
 
-  constructor(http: HttpClient,  @Inject('BASE_URL') baseUrl: string) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.http = http;
     this.baseUrl = baseUrl;
   }
@@ -19,7 +19,7 @@ export class LectureService {
   GetMyLectures(): UserLecture[] {
     let lectures: UserLecture[];
 
-    this.http.get<UserLecture[]>(this.baseUrl + '/api/me', { headers:  this.GetHeaders() })
+    this.http.get<UserLecture[]>(this.baseUrl + '/api/me', { headers: this.GetDefaultHeaders() })
       .pipe(
         tap(res => console.log('ok')),
         catchError(this.handleError<any>())
@@ -29,14 +29,36 @@ export class LectureService {
     return lectures;
   }
 
-  private GetHeaders() {
-    const token = localStorage.getItem('token');
-    const tokenObj = JSON.parse(token);
-    const jwt = tokenObj.accessToken;
+  private GetDefaultHeaders() {
+    const jwt = this.ExtractAccessToken();
     const httpHeaders = new HttpHeaders()
       .set('Content-Type', 'application/json; charset=utf-8')
       .set('Authorization', 'Bearer ' + jwt);
     return httpHeaders;
+  }
+
+  DeleteLecture(lectureId: number) {
+    const url = this.baseUrl + '/api/lectures/' + lectureId;
+    return new Promise((resolve) => {
+      try {
+        this.http.delete(url, { headers: this.GetDefaultHeaders() })
+          .pipe(
+            catchError(this.handleError())
+          ).subscribe(res => {
+            resolve();
+          });
+      } catch (ex) {
+        console.log(ex.message);
+        throw ex;
+      }
+    });
+  }
+
+  private ExtractAccessToken() {
+    const token = localStorage.getItem('token');
+    const tokenObj = JSON.parse(token);
+    const jwt = tokenObj.accessToken;
+    return jwt;
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

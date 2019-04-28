@@ -8,7 +8,7 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { ProfileComponent } from './profile/profile.component';
+import { StudentComponent } from './student/student.component';
 import { LecturesComponent } from './lectures/lectures.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { FooterComponent } from './footer/footer.component';
@@ -23,20 +23,26 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {NgbModule, NgbPagination} from '@ng-bootstrap/ng-bootstrap';
 import {MatSelectModule} from '@angular/material/select';
 import { LectureComponent } from './lecture/lecture.component';
+import { UserComponent } from './user/user.component';
+import { LecturerComponent } from './lecturer/lecturer.component';
+import { NewLectureComponent } from './new-lecture/new-lecture.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SignInComponent,
     HomeComponent,
-    ProfileComponent,
+    StudentComponent,
     LecturesComponent,
     NavMenuComponent,
     FooterComponent,
     SignUpComponent,
     LogoutComponent,
     SignInExternal,
-    LectureComponent
+    LectureComponent,
+    UserComponent,
+    LecturerComponent,
+    NewLectureComponent
   ],
   imports: [
     BrowserModule,
