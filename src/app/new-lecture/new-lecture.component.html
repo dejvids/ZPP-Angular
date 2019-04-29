@@ -1,0 +1,56 @@
+<div class="container container-margin-top">
+    <div class="modal" tabindex="-1" [style.display]="ShowDialog ? 'block' : 'none'" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sukces</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-success" role="alert">Zajęcia zostałe zapisane w systemie.</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" (click)="navigateToList()">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div *ngIf="Processing" class="loader-lg"></div>
+
+        <div class="col-md-8">
+
+            <a class="btn link-back" [routerLink]='["/wykladowca"]'><i class="fa fa-arrow-left"
+                    aria-hidden="true"></i><span class="margin-left-std">Powrót</span></a>
+            <h2>Utwórz nowe zajęcia</h2>
+            <div class="alert alert-danger" [style.display]="IsAlertVisible ? 'block' : 'none'" role="alert">{{Message}}
+            </div>
+            <div class="form-group">
+                <label for="name">Nazwa</label>
+                <input id="name" placeholder="Nazwa zajęć" type="text" class="form-control" [(ngModel)]="Name"
+                    required />
+            </div>
+            <div class="form-group">
+                <label for="lectureDate">Data</label>
+                <input id="lectureDate" [(ngModel)]="Date" type="date" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="lectureTime">Godzina</label>
+                <input id="lectureTime" type="time" [(ngModel)]="Time" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="place">Miejsce</label>
+                <input id="place" type="text" [(ngModel)]="Place" class="form-control" required bind="Place" />
+            </div>
+            <div class="form-group">
+                <label for="desc">Opis</label>
+                <textarea class="form-control" id="desc" [(ngModel)]="Description" rows="3" required bind="Description"
+                    placeholder="Opis wydarzenia..."></textarea>
+            </div>
+
+            <button class="btn btn-primary btn-lg btn-ok"
+                [style.pointer-events]="Processing ?  'none' :'pointer-events:auto'" type="button"
+                (click)="save()">Zapisz</button>
+        </div>
+    </div>
+
+</div>

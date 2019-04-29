@@ -24,6 +24,7 @@ export class LectureComponent implements OnInit {
   httpHeaders: HttpHeaders;
   finished: any;
   isLoaded = false;
+  userIsLecturer
   constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 
   private GetLecture(id: number) {
