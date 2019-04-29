@@ -3,6 +3,8 @@ import { UserLecture } from './Models/UserLecture';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { tap, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import { Lecture } from './Models/Lecture';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +12,12 @@ import { Observable, of } from 'rxjs';
 export class LectureService {
   http: HttpClient;
   baseUrl: string;
+  router: Router;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, router: Router) {
     this.http = http;
     this.baseUrl = baseUrl;
+    this.router = router;
   }
 
   GetMyLectures(): UserLecture[] {
@@ -54,6 +58,23 @@ export class LectureService {
     });
   }
 
+  CreateLecture(lecture: Lecture){
+    const url = this.baseUrl + '/api/lectures';
+    return new Promise((resolve) => {
+      try{
+        this.http.post(url, JSON.stringify(lecture), {headers: this.GetDefaultHeaders()})
+        .pipe(
+          catchError(this.handleError())
+        ).subscribe(res =>{
+          console.log('created');
+          resolve();
+        })
+      } catch(ex){
+        throw ex;
+      }
+    })
+  }
+
   private ExtractAccessToken() {
     const token = localStorage.getItem('token');
     const tokenObj = JSON.parse(token);
@@ -73,7 +94,7 @@ export class LectureService {
       }
 
       if (error.status === 401) {
-        //this.roter.navigateByUrl('/logowanie');
+        this.router.navigateByUrl('/logowanie');
         return;
       }
 

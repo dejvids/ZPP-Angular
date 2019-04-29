@@ -1,7 +1,7 @@
 export class Lecture{
     id : number;
     name : string;
-    descritption : string;
+    description : string;
     date : Date;
     place : string;
     lecturerId : number;
