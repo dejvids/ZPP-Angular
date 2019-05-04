@@ -26,6 +26,7 @@ import { LectureComponent } from './lecture/lecture.component';
 import { UserComponent } from './user/user.component';
 import { LecturerComponent } from './lecturer/lecturer.component';
 import { NewLectureComponent } from './new-lecture/new-lecture.component';
+import { AdministratorComponent } from './administrator/administrator.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { NewLectureComponent } from './new-lecture/new-lecture.component';
     LectureComponent,
     UserComponent,
     LecturerComponent,
-    NewLectureComponent
+    NewLectureComponent,
+    AdministratorComponent
   ],
   imports: [
     BrowserModule,

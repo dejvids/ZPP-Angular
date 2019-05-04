@@ -11,6 +11,7 @@ import { LectureComponent } from './lecture/lecture.component';
 import { UserComponent } from './user/user.component';
 import { LecturerComponent } from './lecturer/lecturer.component';
 import { NewLectureComponent } from './new-lecture/new-lecture.component';
+import { AdministratorComponent } from './administrator/administrator.component';
 
 const appRoutes: Routes =
   [
@@ -26,6 +27,7 @@ const appRoutes: Routes =
     {path: 'zajecia/dodaj', component: NewLectureComponent},
     { path: 'zajecia/:id', component: LectureComponent },
     { path: 'wykladowca', component: LecturerComponent },
+    { path: 'admin', component: AdministratorComponent },
     { path: '**', component: HomeComponent }
   ];
 @NgModule({
