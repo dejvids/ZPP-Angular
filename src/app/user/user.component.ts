@@ -26,8 +26,13 @@ export class UserComponent implements OnInit {
       this.router.navigateByUrl('/student');
       return;
     }
-    else if (token.role.toLowerCase() === 'lecturer'){
+    else if (token.role.toLowerCase() === 'lecturer') {
       this.router.navigateByUrl('/wykladowca');
+      return;
+    }
+
+    else if (token.role.toLowerCase() === 'admin') {
+      this.router.navigateByUrl('/admin');
       return;
     }
 

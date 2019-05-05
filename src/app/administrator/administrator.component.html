@@ -1,63 +1,68 @@
 <div class="container">
-  <div class="modal" tabindex="-1" [style.display]="ShowUserRole ? 'block' : 'none'" role="dialog">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title">Uprawnienia</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="hideDialog()">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>
-              <div class="modal-body">
-                  <p>
-                      Ustaw rolę dla użytkownika <span style="font-style: italic; font-weight: bold">{{selectedUser.login}}</span>
-                      <div class="dropdown show align-right">
-                          <button class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              {{selectedRole}}
-                          </button>
+    <div class="modal" tabindex="-1" [style.display]="showUserRole ? 'block' : 'none'" role="dialog"
+        style="z-index: 5 !important">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Uprawnienia</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="hideDialog()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <p>Ustaw rolę dla użytkownika <span
+                                style="font-style: italic; font-weight: bold">{{selectedUser.login}}</span>
+                        </p>
+                        <mat-form-field class="select-order-box" style="z-index: 6 !important">
+                            <mat-select [(value)]="selectedRole">
+                                <mat-option [value]="2" (click)="seStudentRole()">
+                                    Student
+                                </mat-option>
+                                <mat-option [value]="3" (click)="setLecturerRole()">
+                                    Wykładowca
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
 
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                              <button class="dropdown-item" [ngClass]="{'active': selectedUser.roleId == (number)Enums.Role.Student}" (click)="setStudentRole()">Student</button>
-                              <button class="dropdown-item" [ngClass]="{'active': selectedUser.roleId == (number)Enums.Role.Wykładowca}"  (click)="setLecturerRole()">Wykładowca</button>
-                          </div>
-                      </div>
-                  </p>
-                  <!-- <p class="std-margin" [style.display] = "isSelectedLecturer ? 'bloack : 'none'">
-                      Przynależność do firmy
-                      <div class="dropdown show align-right">
-                          <button class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              {{selectedCompany.name}}
-                          </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                              <button *ngFor="let company of companies" class="dropdown-item" (click)="selecteCompany(company)">{{company.name}}</button>
-                          </div>
-                      </div>
-                  </p> -->
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="hideDialog()">Anuluj</button>
-                  <button type="button" class="btn btn-primary" (click)="setRole()">Zapisz</button>
-              </div>
-          </div>
-      </div>
-  </div>
-  <h1>Konta użytkowników</h1>
-      <ul *ngIf="loaded else loader" class="list-group">
-              <li *ngFor="let user of users" class="list-group-item">
-                  <a class="btn btn-link" href="/zajecia/@user.Id">
-                      {{user.login}} - {{user.name}} {{user.surname}}
-                  </a>
-                  <button class="btn btn-danger horizontal-right btn-std-margin" (click)="showDeleteConfirmation(user)">
-                      <i class="fa fa-trash" aria-hidden="true"></i>
-                      Usuń
-                  </button>
-                  <button class="btn btn-primary horizontal-right btn-std-margin btn-regular" [ngClass]="{'disabled' : !(user.roleId == (number)Enums.Role.Student || user.roleId == (number)Enums.Role.Wykładowca)}"  (click)="showSelectRoleDialog(user)">
-                      {{(((Enums.Role)user.roleId).toString())}}
-                  </button>
-              </li>
-      </ul>
+                    <div class="std-margin" [style.display]="isSelectedLecturer ? 'block' : 'none'">
+                        Przynależność do firmy
+                        <mat-form-field class="select-order-box" style="z-index: 6 !important">
+                            <mat-label>Firma</mat-label>
+                            <mat-select [(value)]="selectedCompanyId" (selectionChange)="companyChanged()">
+                                <mat-option *ngFor="let company of companies" [value]="company.id">
+                                    {{company.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                        (click)="hideDialog()">Anuluj</button>
+                    <button type="button" class="btn btn-primary" (click)="setRole()">Zapisz</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <ng-template #loading>
-    <div class="loader-lg"></div>
-  </ng-template>
+    <h1>Konta użytkowników</h1>
+    <ul *ngIf="loaded else loader" class="list-group">
+        <li *ngFor="let user of users" class="list-group-item">
+            {{user.login}} - {{user.name}} {{user.surname}}
+            <button class="btn btn-danger horizontal-right btn-std-margin" (click)="showDeleteConfirmation(user)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                Usuń
+            </button>
+            <button class="btn btn-primary horizontal-right btn-std-margin btn-regular"
+                [ngClass]="{'disabled' : user.roleId == 1}" (click)="showSelectRoleDialog(user)">
+                {{getRoleName(user.roleId)}}
+            </button>
+        </li>
+    </ul>
+
+    <ng-template #loader>
+        <div class="loader-lg"></div>
+    </ng-template>
 </div>

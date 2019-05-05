@@ -28,20 +28,50 @@ export class AdministratorComponent implements OnInit {
   router: Router;
   message: any;
   hasError: boolean;
+  isSelectedLecturer: boolean = false;
+  selectedCompanyId: number;
 
   private loadUsers(page: number) {
-    try{
-      const url = this.baseUrl + "/api/users/page/" + page;
-      this.http.get<UserDetail[]>(url, {headers:  this.httpHeaders})
-      .pipe( catchError(this.handleError<any>()))
-      .subscribe(res=> {
-          console.log('Loaded users');
+    try {
+      const token = localStorage.getItem('token');
+      if (token == null) {
+        this.router.navigateByUrl('/logowanie');
+        return;
+      }
+      const tokenObj = JSON.parse(token);
+      const jwt = tokenObj.accessToken;
+      this.httpHeaders =
+        new HttpHeaders()
+          .set('Content-Type', 'application/json; charset=utf-8')
+          .set('Authorization', 'Bearer ' + jwt);
+
+      const url = this.baseUrl + '/api/users/page/' + page;
+      this.http.get<UserDetail[]>(url, { headers: this.httpHeaders })
+        .pipe(catchError(this.handleError<any>()))
+        .subscribe(res => {
+          console.log('Loaded users ' + res.length);
+          this.users = res;
+          this.selectedUser = this.users.pop();
+          if (this.selectedUser.roleId === 3) {
+            this.selectedCompanyId = this.selectedUser.companyId;
+          }
         });
-    } catch(ex)
-    {
+    } catch (ex) {
       console.log(ex.message);
     }
   }
+
+  loadCompanies() {
+    const url = this.baseUrl + '/api/companies';
+    this.http.get<Company[]>(url, { headers: this.httpHeaders })
+      .pipe(catchError(this.handleError<any>()))
+      .subscribe(res => {
+        console.log('Loaded companies' + res.length);
+        this.companies = res;
+        this.loaded = true;
+      });
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 
@@ -53,10 +83,10 @@ export class AdministratorComponent implements OnInit {
         this.hasError = true;
       }
       else if (error.status == 401) {
-        console.log("Unathorized");
-        this.router.navigate(['/logowanie']);
+        console.log('Unathorized');
+        this.router.navigate(['/']);
       }
-      else if(error.status == 404){
+      else if (error.status == 404) {
         console.log('not found lecture');
       }
 
@@ -68,27 +98,75 @@ export class AdministratorComponent implements OnInit {
     this.http = http;
     this.baseUrl = baseUrl;
     this.router = router;
-   }
+  }
 
   ngOnInit() {
     this.loadUsers(1);
+    this.loadCompanies();
   }
 
-  hideDialog(){
+  hideDialog() {
     this.showUserRole = false;
   }
 
-  setRole(){
+  setRole() {
     console.log('set user role');
+    const url = this.baseUrl + '/api/users/set-role';
+    const grant = new GrantRole();
+    grant.companyId = this.selectedCompanyId;
+    grant.userId = this.selectedUser.id;
+    grant.roleId = this.selectedRole;
+    const content = JSON.stringify(grant);
+    this.http.put(url, content, { headers: this.httpHeaders })
+      .pipe(catchError(this.handleError<any>()))
+      .subscribe(res => {
+        console.log('role changed successfully');
+        this.hideDialog();
+        this.loadUsers(1);
+      });
   }
 
-  showSelectRoleDialog(user: UserDetail){
+  showSelectRoleDialog(user: UserDetail) {
     this.selectedUser = user;
+    this.selectedRole = user.roleId;
+    if (this.selectedRole === Role.Wykładowca) {
+      this.isSelectedLecturer = true;
+      this.selectedCompanyId = user.companyId;
+    } else {
+      this.isSelectedLecturer = false;
+    }
+    console.log(this.selectedRole.toString());
     this.showUserRole = true;
   }
 
-  showDeleteConfirmation(user: UserDetail){
+  showDeleteConfirmation(user: UserDetail) {
     console.log('delete user');
   }
 
+  companyChanged() {
+    console.log('company changed');
+  }
+
+  getRoleName(id: number) {
+    return Role[id].toString();
+  }
+
+  seStudentRole() {
+    this.selectedRole = Role.Student;
+    this.isSelectedLecturer = false;
+    console.log('student');
+  }
+
+  setLecturerRole() {
+    this.selectedRole = Role.Wykładowca;
+    this.isSelectedLecturer = true;
+    console.log('wykładowca');
+  }
+
+}
+
+class GrantRole {
+  userId: number;
+  roleId: number;
+  companyId: number;
 }
