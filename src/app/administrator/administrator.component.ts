@@ -30,6 +30,7 @@ export class AdministratorComponent implements OnInit {
   hasError: boolean;
   isSelectedLecturer: boolean = false;
   selectedCompanyId: number;
+  deleteConfirmationVisible: boolean;
 
   private loadUsers(page: number) {
     try {
@@ -107,6 +108,7 @@ export class AdministratorComponent implements OnInit {
 
   hideDialog() {
     this.showUserRole = false;
+    this.deleteConfirmationVisible = false;
   }
 
   setRole() {
@@ -127,6 +129,9 @@ export class AdministratorComponent implements OnInit {
   }
 
   showSelectRoleDialog(user: UserDetail) {
+    if(user.roleId !== Role.Student && user.roleId !== Role.Wykładowca) {
+      return;
+    }
     this.selectedUser = user;
     this.selectedRole = user.roleId;
     if (this.selectedRole === Role.Wykładowca) {
@@ -140,6 +145,8 @@ export class AdministratorComponent implements OnInit {
   }
 
   showDeleteConfirmation(user: UserDetail) {
+    this.deleteConfirmationVisible = true;
+    this.selectedUser = user;
     console.log('delete user');
   }
 
@@ -147,6 +154,16 @@ export class AdministratorComponent implements OnInit {
     console.log('company changed');
   }
 
+  deleteUser() {
+    const url = this.baseUrl + '/api/users/' + this.selectedUser.id;
+    this.http.delete(url, {headers: this.httpHeaders})
+    .pipe(catchError(this.handleError<any>()))
+    .subscribe(res => {
+      console.log('user deleted');
+      this.deleteConfirmationVisible = false;
+      this.loadUsers(1);
+    });
+  }
   getRoleName(id: number) {
     return Role[id].toString();
   }
