@@ -63,23 +63,23 @@
                             <label>Bardzo źle</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="grade1" value="1">
+                            <input name="subject" class="form-check-input" [(ngModel)]="subjectMark" type="radio" id="grade1" [value]="1">
                             <label class="form-check-label" for="grade1">1</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="grade2" value="2">
+                            <input name="subject" class="form-check-input" [(ngModel)]="subjectMark" type="radio" id="grade2" [value]="2">
                             <label class="form-check-label" for="grade1">2</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="grade3" value="3">
+                            <input name="subject" class="form-check-input" type="radio" [(ngModel)]="subjectMark" id="grade3" [value]="3">
                             <label class="form-check-label" for="grade1">3</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="grade4" value="4">
+                            <input name="subject" class="form-check-input" type="radio" [(ngModel)]="subjectMark" id="grade4" [value]="4">
                             <label class="form-check-label" for="grade1">4</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="grade5" value="5">
+                            <input name="subject" class="form-check-input" type="radio" [(ngModel)]="subjectMark" id="grade5" [value]="5">
                             <label class="form-check-label" for="grade1">5</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -91,23 +91,23 @@
                             <label>Bardzo źle</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="grade1" value="1">
+                            <input name="lecturer" class="form-check-input" type="radio" [(ngModel)]="lecturerMark" id="grade1" [value]="1">
                             <label class="form-check-label" for="grade1">1</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="grade2" value="2">
+                            <input name="lecturer" class="form-check-input" [(ngModel)]="lecturerMark" type="radio" id="grade2" [value]="2">
                             <label class="form-check-label" for="grade1">2</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="grade3" value="3">
+                            <input name="lecturer" class="form-check-input" type="radio" [(ngModel)]="lecturerMark" id="grade3" [value]="3">
                             <label class="form-check-label" for="grade1">3</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="grade4" value="4">
+                            <input name="lecturer" class="form-check-input" type="radio" [(ngModel)]="lecturerMark" id="grade4" [value]="4">
                             <label class="form-check-label" for="grade1">4</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="grade5" value="5">
+                            <input name="lecturer" class="form-check-input" type="radio" [(ngModel)]="lecturerMark" id="grade5" [value]="5">
                             <label class="form-check-label" for="grade1">5</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -119,23 +119,23 @@
                             <label>Brak szansy</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="grade1" value="1">
+                            <input name="recomendation" class="form-check-input" type="radio" [(ngModel)]="recomendation" id="grade1" [value]="1">
                             <label class="form-check-label" for="grade1">1</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="grade2" value="2">
+                            <input name="recomendation" class="form-check-input" [(ngModel)]="recomendation" type="radio" id="grade2" [value]="2">
                             <label class="form-check-label" for="grade1">2</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="grade3" value="3">
+                            <input name="recomendation" class="form-check-input" type="radio" [(ngModel)]="recomendation" id="grade3" [value]="3">
                             <label class="form-check-label" for="grade1">3</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="grade4" value="4">
+                            <input name="recomendation" class="form-check-input" [(ngModel)]="recomendation" type="radio" id="grade4" [value]="4">
                             <label class="form-check-label" for="grade1">4</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" id="grade5" value="5">
+                            <input name="recomendation" class="form-check-input" [(ngModel)]="recomendation" type="radio" id="grade5" [value]="5">
                             <label class="form-check-label" for="grade1">5</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -143,7 +143,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlTextarea1 font-weight-bold mt-2">Komentarz</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="comment"
                                 placeholder="Napisz komentarz"></textarea>
                         </div>
                     </div>
@@ -207,7 +207,7 @@
                                 {{lecture.name}}
                             </a>
 
-                            <button class="btn btn-secondary horizontal-right" (click)="ShowSetOpinionDialog(lecture)">
+                            <button *ngIf="!lecture.marked" class="btn btn-secondary horizontal-right" (click)="ShowSetOpinionDialog(lecture)">
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 Oceń
                             </button>

@@ -8,6 +8,7 @@ import { JsonWebToken } from '../Models/JsonWebToken';
 import { UserLecture } from '../Models/UserLecture';
 import { LectureService } from '../lecture-service.service';
 import {LectureTab} from '../enums/LectureTab';
+import { Opinion } from '../Models/opinion';
 
 
 @Component({
@@ -31,6 +32,11 @@ export class StudentComponent implements OnInit {
   SetOpinionVisible: boolean;
   ConfirmationCode: string;
   SelectedLecture: UserLecture = new UserLecture();
+
+  subjectMark: number;
+  lecturerMark: number;
+  recomendation: number;
+  comment: string;
 
   user: User;
   roter: Router;
@@ -63,6 +69,11 @@ export class StudentComponent implements OnInit {
 
       if (error.status === 401) {
         this.roter.navigateByUrl('/logowanie');
+        return;
+      }
+
+      if(error.status == 404) {
+        console.log('Not found');
         return;
       }
 
@@ -184,5 +195,28 @@ export class StudentComponent implements OnInit {
   SaveOpinion() {
     console.log('Opinion set');
     this.SetOpinionVisible = false;
+
+    console.log(this.subjectMark);
+    console.log(this.lecturerMark);
+    console.log(this.recomendation);
+    console.log(this.comment);
+
+    const opinion = new Opinion();
+    opinion.lectureId = this.SelectedLecture.id;
+    opinion.lecturerMark = this.lecturerMark;
+    opinion.subjectMark = this.subjectMark;
+    opinion.recommendationChance = this.recomendation;
+    opinion.comment = this.comment;
+
+    const url = this.baseUrl + '/api/opinions';
+    const content = JSON.stringify(opinion);
+
+    this.http.post(url,content, {headers: this.httpHeaders})
+    .pipe(catchError(this.handleError()))
+    .subscribe(res =>{ 
+      console.log('set opinion success');
+      this.LoadUseLectures();
+    });
+
   }
 }
