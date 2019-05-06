@@ -1,0 +1,19 @@
+.horizontal-right {
+    float: right;
+}
+
+.btn-std-margin {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.btn-regular {
+    min-width: 110px;
+}
+
+.align-right {
+    float: right;
+}
+.std-margin{
+    margin-top: 30px;
+}

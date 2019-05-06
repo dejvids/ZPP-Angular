@@ -1,0 +1,90 @@
+<div class="container">
+    <div class="modal" tabindex="-1" [style.display]="deleteConfirmationVisible ? 'block' : 'none'" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Potwierdzenie</h5>
+                    <button type="button" class="close" (click)="hideDialog()" data-dismiss="modal"
+                        aria-label="CloseDialog()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Czy na pewno chcesz usunąć konto użytkownika <span
+                            style="font-style: italic;">{{selectedUser.login}}</span>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" (click)="hideDialog()" class="btn btn-secondary"
+                        data-dismiss="modal">Nie</button>
+                    <button type="button" class="btn btn-primary" (click)="deleteUser()">Tak</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" [style.display]="showUserRole ? 'block' : 'none'" role="dialog"
+        style="z-index: 5 !important">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Uprawnienia</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="hideDialog()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <p>Ustaw rolę dla użytkownika <span
+                                style="font-style: italic; font-weight: bold">{{selectedUser.login}}</span>
+                        </p>
+                        <mat-form-field class="select-order-box" style="z-index: 6 !important">
+                            <mat-select [(value)]="selectedRole">
+                                <mat-option [value]="2" (click)="seStudentRole()">
+                                    Student
+                                </mat-option>
+                                <mat-option [value]="3" (click)="setLecturerRole()">
+                                    Wykładowca
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="std-margin" [style.display]="isSelectedLecturer ? 'block' : 'none'">
+                        Przynależność do firmy
+                        <mat-form-field class="select-order-box" style="z-index: 6 !important">
+                            <mat-label>Firma</mat-label>
+                            <mat-select [(value)]="selectedCompanyId" (selectionChange)="companyChanged()">
+                                <mat-option *ngFor="let company of companies" [value]="company.id">
+                                    {{company.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                        (click)="hideDialog()">Anuluj</button>
+                    <button type="button" class="btn btn-primary" (click)="setRole()">Zapisz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h1>Konta użytkowników</h1>
+    <ul *ngIf="loaded else loader" class="list-group">
+        <li *ngFor="let user of users" class="list-group-item">
+            {{user.login}} - {{user.name}} {{user.surname}}
+            <button class="btn btn-danger horizontal-right btn-std-margin" (click)="showDeleteConfirmation(user)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                Usuń
+            </button>
+            <button class="btn btn-primary horizontal-right btn-std-margin btn-regular"
+                [ngClass]="{'disabled' : user.roleId == 1}" (click)="showSelectRoleDialog(user)">
+                {{getRoleName(user.roleId)}}
+            </button>
+        </li>
+    </ul>
+
+    <ng-template #loader>
+        <div class="loader-lg"></div>
+    </ng-template>
+</div>
