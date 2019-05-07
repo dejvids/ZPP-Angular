@@ -47,3 +47,7 @@ header.masthead {
   .main-panel{
       margin-top: 5em;
   }
+  .centered {
+    margin-left: auto;
+    margin-right: auto;
+  }
