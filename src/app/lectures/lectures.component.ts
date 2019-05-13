@@ -44,7 +44,6 @@ export class LecturesComponent implements OnInit {
     this.getNumberOfLectures();
   }
   getLectures(){
-      //todo move it to LecturesController
     let params = new HttpParams()
       .set("phrase", this.searchedPhrase) //Create new HttpParams
       .set("page", this.page.toString())

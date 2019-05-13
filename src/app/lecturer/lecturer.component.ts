@@ -25,6 +25,7 @@ export class LecturerComponent implements OnInit {
   LoadedLectures: boolean;
   SelectedTab: LectureTab = LectureTab.current;
   DeleteConfVisible: boolean;
+  CheckAbsenceDialogVisible: boolean;
   SetPresentVisible: boolean;
   SetMarkVisible: boolean;
   SetOpinionVisible: boolean;
@@ -79,7 +80,7 @@ export class LecturerComponent implements OnInit {
           this.ActiveLectures = this.UserLectures.filter(x => new Date(x.date).getTime() <= Date.now() && new Date(x.date).getTime() >= Date.now() - (30 * 24 * 3600 * 1000) && x.present == false);
           this.FutureLectures = this.UserLectures.filter(x => new Date(x.date).getTime() > Date.now());
           this.PastLectures = this.UserLectures.filter(x => new Date(x.date).getTime() < Date.now() && !this.ActiveLectures.find(l => l.id == x.id));
-          this.LoadedLectures = true;
+          this.LoadedLectures = true; 
         });
     } catch (ex) {
       console.log(ex.Message);
@@ -121,8 +122,48 @@ export class LecturerComponent implements OnInit {
 
   CloseDialog() {
     this.DeleteConfVisible = false;
+    this.CheckAbsenceDialogVisible = false;
   }
+  CheckAbsence(lecture: UserLecture) {
+    this.SelectedLecture = lecture;
+    if(!lecture.code){
+      lecture.code = this.generateCode();
+      this.SaveLectureCode(lecture);
+    }
+    else {
+      this.ShowAbsenceDialog();
+    }
+  }
+  ShowAbsenceDialog() {
+    this.CheckAbsenceDialogVisible = true;
+  }
+  SaveLectureCode(lecture: UserLecture){
+    const url = this.baseUrl + '/api/presence/code';
+    return new Promise((resolve) => {
+      try{
+        var expirationDate = new Date ( lecture.date );
+        expirationDate.setMinutes ( expirationDate.getMinutes() + 30 );
 
+        this.http.post(url, JSON.stringify(
+          {
+          "id": this.user.id,
+          "lectureId": lecture.id,
+          "code": lecture.code,
+          "validTo": expirationDate,
+        }), {headers: this.httpHeaders})
+        .pipe(
+          catchError(err=> new function() {
+              lecture.code = null}
+            )
+        ).subscribe(
+          suc => {
+            this.ShowAbsenceDialog();
+          })
+      } catch(ex){
+        throw ex;
+      }
+    })
+  }
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
@@ -144,6 +185,11 @@ export class LecturerComponent implements OnInit {
       return of(result as T);
     };
   }
-
+  generateCode() {
+    return 'xxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+        return v.toString(16);
+    });
+  }
 
 }

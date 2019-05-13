@@ -5,5 +5,5 @@ export class UserLecture {
     place: string;
     present: boolean;
     marked: boolean;
-
+    code: string;
 }
