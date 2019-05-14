@@ -45,11 +45,9 @@ export class SignInComponent implements OnInit {
       return;
     }
     let url = this.baseUrl + "/api/sign-in";
-    console.log(url);
     let user = new User();
     user.login = this.login;
     user.password = this.password;
-    console.log(user);
     this.http.post<SignInResult>(url, user, httpOptions)
       .pipe(
         tap(res => console.log('login ok')),
@@ -99,7 +97,6 @@ export class SignInComponent implements OnInit {
 
   ngOnInit() {
     let token = localStorage.getItem('token');
-    console.log('menu ' + token);
     if (token != null) {
       let jwt = JSON.parse(token);
       console.log(jwt.expires);

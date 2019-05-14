@@ -33,7 +33,7 @@ export class LectureComponent implements OnInit {
         tap(res => console.log('ok'))
       ).subscribe(res => {
         this.lecture = res;
-        if (this.lecture.date.getTime() < Date.now()) {
+        if ( this.lecture != null && new Date(this.lecture.date).getTime() < Date.now()) {
           this.finished = true;
         }
       });

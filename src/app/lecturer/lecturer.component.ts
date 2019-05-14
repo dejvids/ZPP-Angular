@@ -8,6 +8,7 @@ import { JsonWebToken } from '../Models/JsonWebToken';
 import { UserLecture } from '../Models/UserLecture';
 import { LectureService } from '../lecture-service.service';
 import { LectureTab } from '../enums/LectureTab';
+import { Lecture } from '../Models/Lecture';
 
 @Component({
   selector: 'app-lecturer',
@@ -76,7 +77,6 @@ export class LecturerComponent implements OnInit {
           catchError(this.handleError<any>())
         ).subscribe(res => {
           this.UserLectures = res;
-          console.log('Futere lectures ' + this.UserLectures.length);
           this.ActiveLectures = this.UserLectures.filter(x => new Date(x.date).getTime() <= Date.now() && new Date(x.date).getTime() >= Date.now() - (30 * 24 * 3600 * 1000) && x.present == false);
           this.FutureLectures = this.UserLectures.filter(x => new Date(x.date).getTime() > Date.now());
           this.PastLectures = this.UserLectures.filter(x => new Date(x.date).getTime() < Date.now() && !this.ActiveLectures.find(l => l.id == x.id));
@@ -103,16 +103,13 @@ export class LecturerComponent implements OnInit {
 
   ShowActive() {
     this.SelectedTab = LectureTab.current;
-    console.log(this.SelectedTab);
   }
 
   ShowFuture() {
     this.SelectedTab = LectureTab.future;
-    console.log(this.SelectedTab);
   }
   ShowPast() {
     this.SelectedTab = LectureTab.past;
-    console.log(this.SelectedTab);
   }
 
   ShowDeleteConfirmation(lecture: UserLecture) {
@@ -152,13 +149,13 @@ export class LecturerComponent implements OnInit {
           "validTo": expirationDate,
         }), {headers: this.httpHeaders})
         .pipe(
-          catchError(err=> new function() {
+          catchError(err => new function() {
               lecture.code = null}
             )
         ).subscribe(
           suc => {
             this.ShowAbsenceDialog();
-          })
+          });
       } catch(ex){
         throw ex;
       }
@@ -185,11 +182,16 @@ export class LecturerComponent implements OnInit {
       return of(result as T);
     };
   }
+
   generateCode() {
     return 'xxxxxx'.replace(/[xy]/g, function(c) {
         var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
         return v.toString(16);
     });
+  }
+
+  showOpinions(lecture: UserLecture) {
+    console.log('Show opinions - not implemented');
   }
 
 }

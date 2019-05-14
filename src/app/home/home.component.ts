@@ -14,22 +14,28 @@ export class HomeComponent implements OnInit {
 
   PromotingLectures: Lecture[];
   Lectures: Lecture[];
-  searchedPhrase: string = "";
+  searchedPhrase: string = '';
   router: Router;
   @Output() openedHome = new EventEmitter<boolean>();
+  httpHeaders: HttpHeaders;
 
   constructor(private http: HttpClient, router: Router,  @Inject('BASE_URL') private baseUrl: string) {
-    this.getLectures();
     this.router = router;
   }
 
-  ngOnInit() {
+  ngOnInit() { 
+    this.PromotingLectures = [];
+    this.httpHeaders =
+    new HttpHeaders()
+      .set('Content-Type', 'application/json; charset=utf-8')
+    this.getPromotingLectures();
   }
+
   private getLectures(){
     //todo do it in service
     let params = new HttpParams().set("phrase", this.searchedPhrase); //Create new HttpParams
-    this.http.get<Lecture[]>(this.baseUrl + "/api/lectures", 
-    { headers: new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8'), params })
+    this.http.get<Lecture[]>(this.baseUrl + '/api/lectures', 
+    { headers: this.httpHeaders, params })
     .pipe(
       tap(res => console.log('ok')),
       catchError(this.handleError<any>())
@@ -58,6 +64,17 @@ export class HomeComponent implements OnInit {
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };
+  }
+
+  private getPromotingLectures() {
+    this.http.get<Lecture[]>(this.baseUrl + '/api/lectures/promoting', 
+    { headers: this.httpHeaders })
+    .pipe(
+      tap(res => console.log('ok - get promoting')),
+      catchError(this.handleError<any>())
+    ).subscribe(res => {
+      this.PromotingLectures = res;
+    });
   }
 
 }
