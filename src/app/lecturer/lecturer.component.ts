@@ -59,6 +59,7 @@ export class LecturerComponent implements OnInit {
       new HttpHeaders()
         .set('Content-Type', 'application/json; charset=utf-8')
         .set('Authorization', 'Bearer ' + jwt);
+
     this.http.get<User>(this.baseUrl + '/api/me', { headers: this.httpHeaders })
       .pipe(
         tap(res => console.log('ok')),
@@ -77,7 +78,7 @@ export class LecturerComponent implements OnInit {
           catchError(this.handleError<any>())
         ).subscribe(res => {
           this.UserLectures = res;
-          this.ActiveLectures = this.UserLectures.filter(x => new Date(x.date).getTime() <= Date.now() && new Date(x.date).getTime() >= Date.now() - (30 * 24 * 3600 * 1000) && x.present == false);
+          this.ActiveLectures = this.UserLectures.filter(x => new Date(x.date).getTime() <= Date.now() && new Date(x.date).getTime() >= Date.now() - (30 * 24 * 3600 * 1000));
           this.FutureLectures = this.UserLectures.filter(x => new Date(x.date).getTime() > Date.now());
           this.PastLectures = this.UserLectures.filter(x => new Date(x.date).getTime() < Date.now() && !this.ActiveLectures.find(l => l.id == x.id));
           this.LoadedLectures = true; 
@@ -124,8 +125,8 @@ export class LecturerComponent implements OnInit {
   CheckAbsence(lecture: UserLecture) {
     this.SelectedLecture = lecture;
     if(!lecture.code){
-      lecture.code = this.generateCode();
-      this.SaveLectureCode(lecture);
+     // lecture.code = this.generateCode();
+      this.SaveLectureCode(lecture).then(c=>console.log(c));
     }
     else {
       this.ShowAbsenceDialog();
@@ -145,7 +146,6 @@ export class LecturerComponent implements OnInit {
           {
           "id": this.user.id,
           "lectureId": lecture.id,
-          "code": lecture.code,
           "validTo": expirationDate,
         }), {headers: this.httpHeaders})
         .pipe(
@@ -159,7 +159,7 @@ export class LecturerComponent implements OnInit {
       } catch(ex){
         throw ex;
       }
-    })
+    });
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

@@ -1,3 +1,29 @@
 .horizontal-right {
     float: right;
 }
+#page-header {
+    margin-bottom: 20px;
+    padding: 8px;
+    border-radius: 8px;
+    border-width: 0px !important;
+    background-color: #0F88AC;
+    color: white;
+    padding-top: 0px;
+    padding-right: 0px;
+}
+#sub-header {
+    /*background-color: #188468;*/
+    margin-left: -8px;
+    margin-right: -8px;
+    padding: 6px;
+}
+#nameHeader {
+    margin-top: 8px;
+}
+.corner-label {
+    background-color: #0A5F78; 
+    font-weight:bold; 
+    font-size:14pt; 
+    padding:8px; 
+    text-align:center
+}
