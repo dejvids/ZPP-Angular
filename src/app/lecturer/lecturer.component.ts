@@ -126,7 +126,7 @@ export class LecturerComponent implements OnInit {
     this.SelectedLecture = lecture;
     if(!lecture.code){
      // lecture.code = this.generateCode();
-      this.SaveLectureCode(lecture).then(c=>console.log(c));
+      this.GetLectureCode(lecture).then(c=>console.log(c));
     }
     else {
       this.ShowAbsenceDialog();
@@ -135,12 +135,12 @@ export class LecturerComponent implements OnInit {
   ShowAbsenceDialog() {
     this.CheckAbsenceDialogVisible = true;
   }
-  SaveLectureCode(lecture: UserLecture){
+  GetLectureCode(lecture: UserLecture){
     const url = this.baseUrl + '/api/presence/code';
     return new Promise((resolve) => {
       try{
-        var expirationDate = new Date ( lecture.date );
-        expirationDate.setMinutes ( expirationDate.getMinutes() + 30 );
+        var expirationDate = new Date(lecture.date)
+        expirationDate.setMinutes ( expirationDate.getMinutes() + 180 );
 
         this.http.post(url, JSON.stringify(
           {
@@ -154,6 +154,7 @@ export class LecturerComponent implements OnInit {
             )
         ).subscribe(
           suc => {
+            lecture.code = (<any>suc).code;
             this.ShowAbsenceDialog();
           });
       } catch(ex){
@@ -181,13 +182,6 @@ export class LecturerComponent implements OnInit {
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };
-  }
-
-  generateCode() {
-    return 'xxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-        return v.toString(16);
-    });
   }
 
   showOpinions(lecture: UserLecture) {

@@ -188,8 +188,31 @@ export class StudentComponent implements OnInit {
   }
 
   SetPresent() {
-    console.log('present is set');
+    this.SendPresence();
     this.SetPresentVisible = false;
+  }
+  SendPresence() {
+    const url = this.baseUrl + '/api/presence';
+    return new Promise((resolve) => {
+      try {
+        this.http.post(url, JSON.stringify(
+          {
+          "lectureId": this.SelectedLecture.id,
+          "code": this.ConfirmationCode
+        }), {headers: this.httpHeaders})
+        .pipe(
+          catchError(err => new function() {
+            console.log(err);
+              }
+            )
+        ).subscribe(
+          suc => {
+            console.log(suc);
+          });
+      } catch(ex){
+        throw ex;
+      }
+    });
   }
 
   SaveOpinion() {
