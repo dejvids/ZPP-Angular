@@ -27,3 +27,23 @@
     padding:8px; 
     text-align:center
 }
+#refresh-btn {
+    float: right;
+    padding: 5px;
+    cursor: pointer;
+    
+}
+#refresh-btn:hover {
+    color: #39A738;
+}
+.dng {
+    color: rgb(148, 72, 72);
+    font-weight: bold;
+}
+
+.dialog-form {
+    float: right;
+    width: 80px;
+    font-size: 12pt;
+    margin-right: 12px;
+}

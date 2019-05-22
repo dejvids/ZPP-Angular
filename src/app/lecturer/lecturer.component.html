@@ -24,36 +24,52 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Wygenerowany kod</h5>
+            <h5 *ngIf="!SelectedLecture.code">Generowanie kodu</h5>
+            <h5 *ngIf="SelectedLecture.code" class="modal-title">Kod wygenerowany</h5>
             <button type="button" class="close" (click)="CloseDialog()" data-dismiss="modal" aria-label="CloseDialog()">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <p>Kod do potwierdzenia obecności: </p> <h3>{{this.SelectedLecture.code}}</h3>
+            <div *ngIf="!codeLoaded" class="loader-md"></div>
+            <div *ngIf="codeLoaded">
+              <div *ngIf="!SelectedLecture.code">
+                <div class="form-group">
+                <label for="minutes">Ważność kodu w minutach</label>
+                <input class="form-control" type="number" id="minutes" min="10" max="300" [(ngModel)]="codeExpires" />
+              </div>
+              <button class="btn btn-primary" type="button" (click)="GetLectureCode()">Wyświetl kod</button>
+            </div>
+            <div *ngIf="SelectedLecture.code">
+              <p>Kod do potwierdzenia obecności: </p>
+              <h3>{{this.SelectedLecture.code}} <i id="refresh-btn" (click)="GetLectureCode()" class="fa fa-refresh" title="Wygeneruj nowy kod" aria-hidden="true"></i>  <input class="form-control dialog-form" title="Czas ważności w minutach" type="number" id="minutes" [(ngModel)]="codeExpires" /></h3>
+              <p *ngIf="codeIsValid">Kod ważny do: {{codeValidTo | date: 'dd-MM-yyyy HH:mm'}}</p>
+              <p *ngIf="!codeIsValid" class="dng">Kod utracił ważność!</p>            
+            </div>
+          </div>
           </div>
         </div>
       </div>
     </div>
     <div id="page-header" class="border border-primary">
       <div class="row">
-          <div class="col-md-10">
-              <p id="nameHeader">Zalogowano jako <span style="font-weight:bold">{{user.name}} {{user.surname}}</span></p>
-          </div>
-          <div class="col-md-2">
-              <p  class="corner-label">Wykładowca</p>
-          </div>
+        <div class="col-md-10">
+          <p id="nameHeader">Zalogowano jako <span style="font-weight:bold">{{user.name}} {{user.surname}}</span></p>
+        </div>
+        <div class="col-md-2">
+          <p class="corner-label">Wykładowca</p>
+        </div>
       </div>
       <div id="sub-header" class="row">
-          <h3 class="col-md-10 align-self-center">Moje zajęcia</h3>
-          <div class="col-md-2 align-self-center">
-            <a  [routerLink]='["/zajecia/dodaj"]' class="btn btn-primary">
-              <i class="fa fa-plus" aria-hidden="true"></i>
-              Dodaj
-            </a>
-          </div>
+        <h3 class="col-md-10 align-self-center">Moje zajęcia</h3>
+        <div class="col-md-2 align-self-center">
+          <a [routerLink]='["/zajecia/dodaj"]' class="btn btn-primary">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Dodaj
+          </a>
+        </div>
       </div>
-  </div>
+    </div>
 
     <div class="row">
       <div class="col-md-12">
@@ -113,7 +129,7 @@
                 </a>
 
                 <button class="btn btn-secondary horizontal-right" (click)="showOpinions(lecture)">
-                    <i class="fa fa-list" aria-hidden="true"></i>
+                  <i class="fa fa-list" aria-hidden="true"></i>
                   Oceny
                 </button>
               </li>

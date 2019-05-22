@@ -9,7 +9,9 @@ import { UserLecture } from '../Models/UserLecture';
 import { LectureService } from '../lecture-service.service';
 import { LectureTab } from '../enums/LectureTab';
 import { Lecture } from '../Models/Lecture';
+import { VerificationCode } from '../Models/VerificationCode';
 
+const CODE_EXPIRES_MINUTES = 30;
 @Component({
   selector: 'app-lecturer',
   templateUrl: './lecturer.component.html',
@@ -32,6 +34,10 @@ export class LecturerComponent implements OnInit {
   SetOpinionVisible: boolean;
   ConfirmationCode: string;
   SelectedLecture: UserLecture = new UserLecture();
+  codeExpires: number;
+  codeLoaded: boolean;
+  codeValidTo: Date;
+  codeIsValid: boolean;
 
   user: User;
   roter: Router;
@@ -81,7 +87,7 @@ export class LecturerComponent implements OnInit {
           this.ActiveLectures = this.UserLectures.filter(x => new Date(x.date).getTime() <= Date.now() && new Date(x.date).getTime() >= Date.now() - (30 * 24 * 3600 * 1000));
           this.FutureLectures = this.UserLectures.filter(x => new Date(x.date).getTime() > Date.now());
           this.PastLectures = this.UserLectures.filter(x => new Date(x.date).getTime() < Date.now() && !this.ActiveLectures.find(l => l.id == x.id));
-          this.LoadedLectures = true; 
+          this.LoadedLectures = true;
         });
     } catch (ex) {
       console.log(ex.Message);
@@ -91,7 +97,7 @@ export class LecturerComponent implements OnInit {
 
   DeleteLecture() {
     try {
-      this.lectureService.DeleteLecture(this.SelectedLecture.id).then( (res) => {
+      this.lectureService.DeleteLecture(this.SelectedLecture.id).then((res) => {
         console.log('deleted');
         this.DeleteConfVisible = false;
         this.LoadUseLectures();
@@ -123,42 +129,76 @@ export class LecturerComponent implements OnInit {
     this.CheckAbsenceDialogVisible = false;
   }
   CheckAbsence(lecture: UserLecture) {
+    this.codeLoaded = false;
+    this.codeExpires = CODE_EXPIRES_MINUTES;
+    this.ShowAbsenceDialog();
     this.SelectedLecture = lecture;
-    if(!lecture.code){
-     // lecture.code = this.generateCode();
-      this.GetLectureCode(lecture).then(c=>console.log(c));
-    }
-    else {
-      this.ShowAbsenceDialog();
-    }
+    this.getActiveCode()
+      .then(x => {
+        this.codeLoaded = true;
+      });
   }
   ShowAbsenceDialog() {
     this.CheckAbsenceDialogVisible = true;
   }
-  GetLectureCode(lecture: UserLecture){
+  GetLectureCode() {
+    const lecture = this.SelectedLecture;
     const url = this.baseUrl + '/api/presence/code';
     return new Promise((resolve) => {
-      try{
-        var expirationDate = new Date(lecture.date)
-        expirationDate.setMinutes ( expirationDate.getMinutes() + 180 );
+      try {
+        var expirationDate = new Date(Date.now())
+        if(this.codeExpires < 10) {
+          this.codeExpires = 10;
+        }
+        if(this.codeExpires > 300) {
+          this.codeExpires = 300;
+        }
+        expirationDate.setMinutes(expirationDate.getMinutes() + this.codeExpires);
 
         this.http.post(url, JSON.stringify(
           {
-          "id": this.user.id,
-          "lectureId": lecture.id,
-          "validTo": expirationDate,
-        }), {headers: this.httpHeaders})
-        .pipe(
-          catchError(err => new function() {
-              lecture.code = null}
+            "id": this.user.id,
+            "lectureId": lecture.id,
+            "validTo": expirationDate,
+          }), { headers: this.httpHeaders })
+          .pipe(
+            catchError(err => new function () {
+              lecture.code = null
+            }
             )
-        ).subscribe(
-          suc => {
-            lecture.code = (<any>suc).code;
-            this.ShowAbsenceDialog();
-          });
-      } catch(ex){
+          ).subscribe(
+            suc => {
+              lecture.code = (<any>suc).code;
+              this.codeValidTo = new Date((<any>suc).validTo);
+              this.codeIsValid = this.codeValidTo.getTime() > Date.now();
+              this.ShowAbsenceDialog();
+            });
+      } catch (ex) {
         throw ex;
+      }
+    });
+  }
+
+  getActiveCode() {
+    return new Promise((resolve) => {
+      const url = this.baseUrl + `/api/presence/code/${this.SelectedLecture.id}`;
+      try {
+        this.http.get<VerificationCode>(url, { headers: this.httpHeaders })
+          .pipe(
+            tap(res => {
+              if (res != null) {
+                this.SelectedLecture.code = res.code;             
+              }
+            }),
+            catchError(this.handleError()))
+          .subscribe(res => {
+            this.codeValidTo = new Date((<any>res).validTo);
+            this.codeIsValid = this.codeValidTo.getTime() > Date.now();
+            resolve();
+          });
+      }
+      catch {
+        resolve();
       }
     });
   }
@@ -167,7 +207,7 @@ export class LecturerComponent implements OnInit {
     return (error: any): Observable<T> => {
 
       // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
+      //  console.error(error); // log to console instead
 
       // TODO: better job of transforming error for user consumption
       if (error.status === 400) {

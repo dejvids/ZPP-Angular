@@ -37,8 +37,9 @@
                         <p>Aby potwierdzić obecność wpisz kod podany przez prowadzącego zajęcia</p>
                         <div class="form-group">
                             <label for="code">Kod:</label>
-                            <input type="text" class="form-control" id="code" bind="ConfirmationCode" />
+                            <input type="text" class="form-control" id="code" [(ngModel)]="ConfirmationCode" />
                         </div>
+                        <p style="color: rgb(148, 72, 72)">{{ErrorMessage}}</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" (click)="CloseDialog()" class="btn btn-secondary"

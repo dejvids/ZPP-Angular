@@ -23,6 +23,7 @@ export class StudentComponent implements OnInit {
   FutureLectures: UserLecture[];
   ActiveLectures: UserLecture[];
   PastLectures: UserLecture[];
+  ErrorMessage: string;
 
   LoadedLectures: boolean;
   SelectedTab: LectureTab = LectureTab.current;
@@ -60,11 +61,13 @@ export class StudentComponent implements OnInit {
     return (error: any): Observable<T> => {
 
       // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
+     // console.error(error); // log to console instead
 
       // TODO: better job of transforming error for user consumption
       if (error.status === 400) {
-        console.log(`${operation} failed: ${error.error.message}`);
+        console.log(`${operation} failed: ${error.error}`);
+        this.ErrorMessage = error.error;
+        return;
       }
 
       if (error.status === 401) {
@@ -189,7 +192,6 @@ export class StudentComponent implements OnInit {
 
   SetPresent() {
     this.SendPresence();
-    this.SetPresentVisible = false;
   }
   SendPresence() {
     const url = this.baseUrl + '/api/presence';
@@ -201,14 +203,14 @@ export class StudentComponent implements OnInit {
           "code": this.ConfirmationCode
         }), {headers: this.httpHeaders})
         .pipe(
-          catchError(err => new function() {
-            console.log(err);
-              }
-            )
+          catchError(this.handleError())
         ).subscribe(
           suc => {
             console.log(suc);
+            this.SetPresentVisible = false;
+            this.LoadUseLectures();
           });
+          
       } catch(ex){
         throw ex;
       }
