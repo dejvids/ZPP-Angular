@@ -146,7 +146,7 @@ export class LecturerComponent implements OnInit {
     const url = this.baseUrl + '/api/presence/code';
     return new Promise((resolve) => {
       try {
-        var expirationDate = new Date(Date.now())
+        let expirationDate = new Date();
         if(this.codeExpires < 10) {
           this.codeExpires = 10;
         }
@@ -154,12 +154,18 @@ export class LecturerComponent implements OnInit {
           this.codeExpires = 300;
         }
         expirationDate.setMinutes(expirationDate.getMinutes() + this.codeExpires);
-
+        
+        console.log(expirationDate);
+        let newDate = new Date();
+        newDate.setMinutes(newDate.getMinutes() + this.codeExpires);
+        newDate.setHours(newDate.getHours() + 2);
+        console.log('date ' + newDate);
         this.http.post(url, JSON.stringify(
           {
             "id": this.user.id,
             "lectureId": lecture.id,
-            "validTo": expirationDate,
+            "validTo": newDate
+            
           }), { headers: this.httpHeaders })
           .pipe(
             catchError(err => new function () {
@@ -170,6 +176,7 @@ export class LecturerComponent implements OnInit {
             suc => {
               lecture.code = (<any>suc).code;
               this.codeValidTo = new Date((<any>suc).validTo);
+              this.codeValidTo.setHours(this.codeValidTo.getHours() - 2);
               this.codeIsValid = this.codeValidTo.getTime() > Date.now();
               this.ShowAbsenceDialog();
             });
@@ -187,12 +194,13 @@ export class LecturerComponent implements OnInit {
           .pipe(
             tap(res => {
               if (res != null) {
-                this.SelectedLecture.code = res.code;             
+                this.SelectedLecture.code = res.code;
               }
             }),
             catchError(this.handleError()))
           .subscribe(res => {
             this.codeValidTo = new Date((<any>res).validTo);
+            console.log(this.codeValidTo);
             this.codeIsValid = this.codeValidTo.getTime() > Date.now();
             resolve();
           });
