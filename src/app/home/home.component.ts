@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
     this.getPromotingLectures();
   }
 
-  private getLectures(){
+  getLectures(){
     //todo do it in service
     let params = new HttpParams().set("phrase", this.searchedPhrase); //Create new HttpParams
     this.http.get<Lecture[]>(this.baseUrl + '/api/lectures', 

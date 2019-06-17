@@ -17,6 +17,7 @@ export class NewLectureComponent implements OnInit {
   Date: string;
   Time: string;
   Message: string;
+  Processing = false;
 
   ShowDialog: boolean;
   IsAlertVisible: boolean;

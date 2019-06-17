@@ -10,6 +10,7 @@ import { LectureService } from '../lecture-service.service';
 import { LectureTab } from '../enums/LectureTab';
 import { Lecture } from '../Models/Lecture';
 import { VerificationCode } from '../Models/VerificationCode';
+import { OpinionsService } from '../opinions.service';
 
 const CODE_EXPIRES_MINUTES = 30;
 @Component({
@@ -40,13 +41,13 @@ export class LecturerComponent implements OnInit {
   codeIsValid: boolean;
 
   user: User;
-  roter: Router;
+  router: Router;
   http: HttpClient;
   baseUrl: string;
   httpHeaders: HttpHeaders;
 
-  constructor(router: Router, http: HttpClient, @Inject('BASE_URL') baseUrl: string, lectureService: LectureService) {
-    this.roter = router;
+  constructor (router: Router, http: HttpClient, @Inject('BASE_URL') baseUrl: string, lectureService: LectureService) {
+    this.router = router;
     this.http = http;
     this.user = new User();
     this.baseUrl = baseUrl;
@@ -56,7 +57,7 @@ export class LecturerComponent implements OnInit {
   ngOnInit() {
     const token = localStorage.getItem('token');
     if (token == null) {
-      this.roter.navigateByUrl('/logowanie');
+      this.router.navigateByUrl('/logowanie');
       return;
     }
     const tokenObj = JSON.parse(token);
@@ -223,7 +224,7 @@ export class LecturerComponent implements OnInit {
       }
 
       if (error.status === 401) {
-        this.roter.navigateByUrl('/logowanie');
+        this.router.navigateByUrl('/logowanie');
         return;
       }
 
@@ -233,7 +234,8 @@ export class LecturerComponent implements OnInit {
   }
 
   showOpinions(lecture: UserLecture) {
-    console.log('Show opinions - not implemented');
+    this.router.navigateByUrl(`/opinie/${lecture.id}`);
+    return;
   }
 
 }

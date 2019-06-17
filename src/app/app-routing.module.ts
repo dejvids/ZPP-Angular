@@ -12,6 +12,7 @@ import { UserComponent } from './user/user.component';
 import { LecturerComponent } from './lecturer/lecturer.component';
 import { NewLectureComponent } from './new-lecture/new-lecture.component';
 import { AdministratorComponent } from './administrator/administrator.component';
+import { OpinionsComponent } from './opinions/opinions.component';
 
 const appRoutes: Routes =
   [
@@ -28,6 +29,7 @@ const appRoutes: Routes =
     { path: 'zajecia/:id', component: LectureComponent },
     { path: 'wykladowca', component: LecturerComponent },
     { path: 'admin', component: AdministratorComponent },
+    { path: 'opinie/:id', component: OpinionsComponent},
     { path: '**', component: HomeComponent }
   ];
 @NgModule({

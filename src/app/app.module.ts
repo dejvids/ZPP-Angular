@@ -27,6 +27,7 @@ import { UserComponent } from './user/user.component';
 import { LecturerComponent } from './lecturer/lecturer.component';
 import { NewLectureComponent } from './new-lecture/new-lecture.component';
 import { AdministratorComponent } from './administrator/administrator.component';
+import { OpinionsComponent } from './opinions/opinions.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { AdministratorComponent } from './administrator/administrator.component'
     UserComponent,
     LecturerComponent,
     NewLectureComponent,
-    AdministratorComponent
+    AdministratorComponent,
+    OpinionsComponent
   ],
   imports: [
     BrowserModule,

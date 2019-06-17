@@ -1,0 +1,24 @@
+<div class="container container-margin-top">
+  <a class="btn link-back" [routerLink]='["/profil"]'><i class="fa fa-arrow-left" aria-hidden="true"></i><span class="margin-left-std">Powrót</span></a>
+  <h1>Oceny dla zajęć:<span style="font-style: italic">{{selectedLecture?.name}}</span> </h1>
+  <table class="table">
+      <thead>
+          <tr>
+              <th>Nr</th>
+              <th>Ocena tematu</th>
+              <th>Ocena wykadowcy</th>
+              <th>Szansa na polecenie</th>
+              <th>Komentasz</th>
+          </tr>
+      </thead>
+      <tbody>
+                  <tr *ngFor="let opinion of opinions; let i = index;">
+                      <td>{{i+1}}</td>
+                      <td>{{opinion.subjectMark}}</td>
+                      <td>{{opinion.lecturerMark}}</td>
+                      <td>{{opinion.recommendationChance}}</td>
+                      <td>{{opinion.comment}}</td>
+                  </tr>
+      </tbody>
+  </table>
+</div>
