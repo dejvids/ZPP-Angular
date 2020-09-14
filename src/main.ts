@@ -5,8 +5,8 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 export function getBaseUrl() {
-  return "https://zpp-api.azurewebsites.net";
- //return "http://localhost:5000";
+  //return "https://zpp-api.azurewebsites.net";
+ return "http://localhost:5000";
 }
 
 const providers = [
