@@ -1,7 +1,9 @@
 # ZPP-Angular
 Simple Angular app - the result of learning Angular framework.
 
-App works with REST API exposed by ZPP-API application, avalible also on [ZPP-API](https://zpp-api.azurewebsites.net/swagger/index.html)
+App works with REST API exposed by ZPP-API application
+
+[ZPP-API](https://github.com/dejvids/zpp-api)
 
 ## Development server
 
